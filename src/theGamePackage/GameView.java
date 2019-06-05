@@ -1,15 +1,22 @@
 package theGamePackage;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 
 import theGamePackage.IGameManager.Direction;
 //
@@ -17,11 +24,12 @@ import theGamePackage.IGameManager.Direction;
 //import GameView.StopAction;
 //import GameView.ourThread;
 
-public class GameView extends JFrame{
-	/**
-	 * 
-	 */
+public class GameView extends JFrame{ 
+	
 	private static final long serialVersionUID = 1L; // ???
+    private static final int GAP = 1;
+    private static final Font LABEL_FONT = new Font(Font.DIALOG, Font.PLAIN, 24);
+    private JLabel[][] grid = new JLabel[5][5];
 	
 	
 	JButton btnUp = new JButton("Up");	
@@ -31,45 +39,54 @@ public class GameView extends JFrame{
 	JButton btnHint = new JButton("Hint");
 	
 	JLabel lblMsg = new JLabel("", JLabel.LEFT);
-	
-//	DefaultListModel field = new DefaultListModel();
-//	field.addElement("Online People");
-//	JList list = new JList( field );
 
 	Thread varThread = null;
-	//JLabel label = new JLabel();
 	
 	
 	public GameView() {
-		
-		JPanel panMatrix = new JPanel();
-		JPanel panBtns = new JPanel();
-		JPanel panMsg = new JPanel();
+
+		JPanel panMain = new JPanel(new FlowLayout());
+		JPanel panMatrix = new JPanel(new GridLayout(5, 5, GAP, GAP));
+		JPanel panBtns = new JPanel(new FlowLayout());
+		JPanel panMsg = new JPanel(new FlowLayout());
 		
 		this.setVisible(true);
 		this.setSize(500, 500);
         this.setTitle("Sokoban");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		this.setLayout(new FlowLayout());
-		//this.setResizable(false);
-
-//		this.add(label);
 		
-		panMatrix.setLayout(new FlowLayout()); 
-		/////////////////
-		add(panMatrix);
-	    
-		panBtns.setLayout(new FlowLayout());
+		this.add(panMain);
+		panMain.setVisible(true);
+		panMain.setSize(400, 400);
+		//panMain.add(panMatrix, BorderLayout.CENTER);
+
+		panMain.add(panMatrix);
+		panMatrix.setBorder(BorderFactory.createEmptyBorder(GAP, GAP, GAP, GAP));
+		panMatrix.setBackground(Color.BLACK);
+		for(int row = 0; row < grid.length; row++) 
+		{
+			for(int col = 0; col < grid[row].length; col++)
+			{
+				//panMatrix.add(new JLabel("lbl ", JLabel.CENTER));
+				grid[row][col] = new JLabel("     ", SwingConstants.CENTER);
+                grid[row][col].setFont(LABEL_FONT); // make it big
+                grid[row][col].setOpaque(true);
+                grid[row][col].setBackground(Color.WHITE);
+                panMatrix.add(grid[row][col]);
+			}
+				
+		}
+
 		panBtns.add(btnUp);
 		panBtns.add(btnDown);
 		panBtns.add(btnLeft);
 		panBtns.add(btnRight);
 		panBtns.add(btnHint);
-		add(panBtns);
-		
-		panMsg.setLayout(new FlowLayout()); 
+		panMain.add(panBtns);
+
+
 		panMsg.add(lblMsg = new JLabel("msgLabel"));
-		add(panMsg);
+		panMain.add(panMsg);
 		
 		
 		
