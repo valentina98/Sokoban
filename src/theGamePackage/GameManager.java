@@ -6,69 +6,66 @@ import java.util.Random;
 
 public class GameManager implements IGameManager {
 
-    public int rowNum;
+    public int rowNum=5;
+    public int colNum=5;
     public int brObstacles;
+    public Element[] matrix;
     private int characterPosition;
     //private int targetPosition; /////////////////
     
     //ArrayList<Element> matrix = new ArrayList<Element>();
-    Element[] matrix;
+    
 
-	public GameManager(int rn, int brObst) {
-		rowNum = rn;
-		brObstacles = brObst;
-		matrix = new Element[rowNum*rowNum];
-		for (int i=0; i<rowNum*rowNum; i++)
+	public GameManager() {
+//		rowNum = rn;
+//		brObstacles = brObst;
+		matrix = new Element[rowNum*colNum];
+		for (int i=0; i<rowNum*colNum; i++)
 		{
 			matrix[i] = Element.EMPTY;
 		}
-		setMatrix(brObst);
+		setMatrix(5);
 	}
 	@Override
 	public void getMatrix() {
-		for (int i=0; i<rowNum*rowNum; i++) {
+		for (int i=0; i<rowNum*colNum; i++) {
 			System.out.print(matrix[i].toString() +  " ");
 			if((i+1)%rowNum == 0) System.out.println();
 	    }
     }
 	@Override
-	public void setMatrix(int brObstacles) {
-		int cursor = getRandomNumberInRange(0, rowNum*rowNum-1); //rowNum*rowNum
+	public void setMatrix(int brObst) {
+		brObstacles = brObst;
+		
+		int cursor = getRandomNumberInRange(0, rowNum*colNum-1); //rowNum*colNum
 		matrix[cursor] = Element.CHARACTER;
 		characterPosition = cursor;
 		
-		cursor = getRandomNumberInRange(0, rowNum*rowNum-1); //rowNum*rowNum
+		cursor = getRandomNumberInRange(0, rowNum*colNum-1);
 		matrix[cursor] = Element.TARGET;
 		//targetPosition = cursor;
 		
 		for (int i=0; i<brObstacles; i++) {
-			cursor = getRandomNumberInRange(0, rowNum*rowNum-1); //rowNum*rowNum
+			cursor = getRandomNumberInRange(0, rowNum*colNum-1); 
 			if (matrix[cursor] != Element.EMPTY) i--;
 			else matrix[cursor] = Element.OBSTACLE;
 	    }
 	}
 
 	@Override
-	public void move(Direction dir) {
+	public boolean move(Direction dir) {
 		int newPosition;
 		if(positionExists(characterPosition, dir)) {
 			newPosition = getPosition(characterPosition, dir);
-			//case "exit":
-//			if(characterPosition < rowNum &&
-//				characterPosition > rowNum*(rowNum-1) &&
-//				characterPosition % rowNum == 0 &&
-//				characterPosition-1 % rowNum ==0) { // obstaclePosition
-//				
-//				System.out.print("game over");
-//			}
-
+			
 
 			matrix[characterPosition] = matrix[newPosition]; // sets the old to empty
 			matrix[newPosition] = Element.CHARACTER;
 			characterPosition = newPosition;
+			return true;
 		}
 		else {
-				System.out.println("cannot move that way");
+			return false;
 		}
 	}
 	@Override

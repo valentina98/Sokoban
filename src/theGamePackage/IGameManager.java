@@ -17,7 +17,7 @@ public interface IGameManager {
     }
     public void getMatrix();
     public void setMatrix(int brObst);
-    public void move(Direction dir);
+    public boolean move(Direction dir);
     public void findSolution();
     //public void getRandomElement(ArrayList<Element> mx);
 }
