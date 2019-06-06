@@ -23,6 +23,9 @@ public class GameController {
 		gameView.btnHint.addActionListener(new GetHintAction());
 		
 		iGameManager.setMatrix(5);
+		
+		gameView.grid[1][1].setText("asd");
+		
 		boolean moved = iGameManager.move(Direction.UP); // move if possible
 		if(!moved)
 		{

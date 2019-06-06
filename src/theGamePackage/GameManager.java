@@ -58,7 +58,6 @@ public class GameManager implements IGameManager {
 		if(positionExists(characterPosition, dir)) {
 			newPosition = getPosition(characterPosition, dir);
 			
-
 			matrix[characterPosition] = matrix[newPosition]; // sets the old to empty
 			matrix[newPosition] = Element.CHARACTER;
 			characterPosition = newPosition;
@@ -91,8 +90,8 @@ public class GameManager implements IGameManager {
 	private static int getRandomNumberInRange(int min, int max) {
 		Random r = new Random();
 		return r.ints(min, (max + 1)).limit(1).findFirst().getAsInt();
-		
 	}
+	
 	private  int getPosition(int pos, Direction dir) {
 		switch(dir) {
 		  case UP:
@@ -108,10 +107,14 @@ public class GameManager implements IGameManager {
 		}
 	}
 	private boolean positionExists(int pos, Direction dir) {
-		if(pos < rowNum && dir == Direction.UP ||
-				pos > rowNum*(rowNum-1) && dir == Direction.RIGHT ||
-				pos % rowNum == 0 && dir == Direction.DOWN ||
-				pos-1 % rowNum ==0 && dir == Direction.LEFT) return false;
+		if(pos < colNum && dir == Direction.UP ||
+				pos % colNum-1 == 0 && dir == Direction.RIGHT ||
+				pos > colNum*(rowNum-1) && dir == Direction.DOWN ||
+				pos % rowNum-1 == 0 && dir == Direction.LEFT) return false;
+//		if(pos < rowNum && dir == Direction.UP ||
+//				pos > rowNum*(rowNum-1) && dir == Direction.RIGHT ||
+//				pos % rowNum == 0 && dir == Direction.DOWN ||
+//				pos-1 % rowNum ==0 && dir == Direction.LEFT) return false;
 		else return true;
 	}
 	private ArrayList<Integer> getReachableArea(int currentPos, ArrayList<Integer> reachableArea){
@@ -126,10 +129,4 @@ public class GameManager implements IGameManager {
 		}
 		return reachableArea;
 	}
-//	private static void swapSquares(Element a, Element b) { // not sure
-//		Element c = a;
-//		a = b;
-//		b = c;
-//	}
-	
 }
