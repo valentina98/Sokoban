@@ -9,7 +9,7 @@ import theGamePackage.IGameManager.Direction;
 
 public class GameController {
 	
-	static IGameManager iGameManager = new GameManager();//rowNum, brObstacles
+	static IGameManager iGameManager = new GameManager(5,5,5);//rowNum, 
 	
 
 	public static void main(String[] args) {
@@ -22,7 +22,7 @@ public class GameController {
 		gameView.btnRight.addActionListener(new MoveRightAction());
 		gameView.btnHint.addActionListener(new GetHintAction());
 		
-		iGameManager.setMatrix(5);
+		iGameManager.setMatrix();
 		
 		gameView.grid[1][1].setText("asd");
 		

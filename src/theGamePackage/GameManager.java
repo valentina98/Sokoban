@@ -6,47 +6,52 @@ import java.util.Random;
 
 public class GameManager implements IGameManager {
 
-    public int rowNum=5;
-    public int colNum=5;
+    public int rowNumber;
+    public int colNumber;
     public int brObstacles;
-    public Element[] matrix;
+    public Element[] matrix; // used 1D array, scroll down for the private methods
     private int characterPosition;
-    //private int targetPosition; /////////////////
+    private int targetPosition; /////////////////
     
     //ArrayList<Element> matrix = new ArrayList<Element>();
     
 
-	public GameManager() {
-//		rowNum = rn;
-//		brObstacles = brObst;
-		matrix = new Element[rowNum*colNum];
-		for (int i=0; i<rowNum*colNum; i++)
+    public GameManager(int rowNum, int colNum, int brObst) {
+		this.rowNumber = rowNum;
+		this.colNumber = colNum;
+		this.brObstacles = brObst;
+		
+		matrix = new Element[rowNumber*colNumber];
+		for (int i=0; i<rowNumber*colNumber; i++)
 		{
 			matrix[i] = Element.EMPTY;
 		}
-		setMatrix(5);
+		setMatrix();
+		// i can switch the order of the loop and setMatrix
 	}
 	@Override
 	public void getMatrix() {
-		for (int i=0; i<rowNum*colNum; i++) {
+		for (int i=0; i<rowNumber*colNumber; i++) {
 			System.out.print(matrix[i].toString() +  " ");
-			if((i+1)%rowNum == 0) System.out.println();
+			if((i+1)%rowNumber == 0) System.out.println();
 	    }
     }
 	@Override
-	public void setMatrix(int brObst) {
-		brObstacles = brObst;
+	public void setMatrix() {
 		
-		int cursor = getRandomNumberInRange(0, rowNum*colNum-1); //rowNum*colNum
+		// set character position
+		int cursor = getRandomNumberInRange(0, rowNumber*colNumber-1); //rowNum*colNum
 		matrix[cursor] = Element.CHARACTER;
 		characterPosition = cursor;
 		
-		cursor = getRandomNumberInRange(0, rowNum*colNum-1);
+		// set target position
+		cursor = getRandomNumberInRange(0, rowNumber*colNumber-1);
 		matrix[cursor] = Element.TARGET;
-		//targetPosition = cursor;
+		targetPosition = cursor;
 		
+		// set obstacles' positions
 		for (int i=0; i<brObstacles; i++) {
-			cursor = getRandomNumberInRange(0, rowNum*colNum-1); 
+			cursor = getRandomNumberInRange(0, rowNumber*colNumber-1); 
 			if (matrix[cursor] != Element.EMPTY) i--;
 			else matrix[cursor] = Element.OBSTACLE;
 	    }
@@ -69,12 +74,21 @@ public class GameManager implements IGameManager {
 	}
 	@Override
 	public void findSolution() {
+		// Get the reachable area -> characterReachablePath, boxReachablePath
+		// Get the shortest path from the box to the target that can be implemented (can be pushed through it)
+		// methods getBoxPath and get1PushCharacterPath will be needed
+		/* I should check if there is an empty square on the 
+		   opposite side of the turns/ the position opposite of the moving position of the box
+		   so that the character can be there to push */
+		// check if that empty square exists in the characterReachablePath
 		
-		// there is a road from between the obstacle and the target? // find all options
-		// there is an empty square on the other side of the turns
-		// there is a road from the character position to this empty square?
+		// Get the shortest path from the character to the pushingPosition
+		/* I'll need to get the next element from the boxPath and set the
+		   pushingPosition to the opposite side of that nextElement  */
 		
-		// count moves, find shortest
+		
+		
+		// count character moves
 		
 		//if(matrix[getPosition(direction)] != Element.TARGET) 
 		
@@ -93,13 +107,14 @@ public class GameManager implements IGameManager {
 	}
 	
 	private  int getPosition(int pos, Direction dir) {
+		// gets the position I want to reach
 		switch(dir) {
 		  case UP:
-			  return pos-rowNum;
+			  return pos-colNumber;
 		  case RIGHT:
 			  return pos+1;
 		  case DOWN:
-			  return pos+rowNum;
+			  return pos+colNumber;
 		  case LEFT:
 			  return pos-1;
 		default: 
@@ -107,18 +122,16 @@ public class GameManager implements IGameManager {
 		}
 	}
 	private boolean positionExists(int pos, Direction dir) {
-		if(pos < colNum && dir == Direction.UP ||
-				pos % colNum-1 == 0 && dir == Direction.RIGHT ||
-				pos > colNum*(rowNum-1) && dir == Direction.DOWN ||
-				pos % rowNum-1 == 0 && dir == Direction.LEFT) return false;
-//		if(pos < rowNum && dir == Direction.UP ||
-//				pos > rowNum*(rowNum-1) && dir == Direction.RIGHT ||
-//				pos % rowNum == 0 && dir == Direction.DOWN ||
-//				pos-1 % rowNum ==0 && dir == Direction.LEFT) return false;
+		// Checks if the position I want to reach exists 
+		if(pos < colNumber && dir == Direction.UP ||
+			pos % (colNumber-1) == 0 && dir == Direction.RIGHT ||
+			pos > (rowNumber-1)*colNumber-1 && dir == Direction.DOWN ||
+			pos % colNumber == 0 && dir == Direction.LEFT) return false;
 		else return true;
 	}
 	private ArrayList<Integer> getReachableArea(int currentPos, ArrayList<Integer> reachableArea){
-		
+		// should get the whole area that can be reached from the given position
+		// currently throws stack overflow
 		if(!reachableArea.contains(currentPos)) reachableArea.add(currentPos);
 		
 		for (Direction dir : Direction.values()) 
