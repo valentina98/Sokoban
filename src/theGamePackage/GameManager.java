@@ -27,20 +27,18 @@ public class GameManager implements IGameManager {
 			matrix[i] = Element.EMPTY;
 		}
 		setMatrix();
-		// i can switch the order of the loop and setMatrix
+		 //i can switch the order of the loop and setMatrix
 	}
 	@Override
-	public void getMatrix() {
-		for (int i=0; i<rowNumber*colNumber; i++) {
-			System.out.print(matrix[i].toString() +  " ");
-			if((i+1)%rowNumber == 0) System.out.println();
-	    }
+	public Element[] getMatrix() {
+		
+		return this.matrix;
     }
 	@Override
 	public void setMatrix() {
 		
 		// set character position
-		int cursor = getRandomNumberInRange(0, rowNumber*colNumber-1); //rowNum*colNum
+		int cursor = getRandomNumberInRange(0, rowNumber*colNumber-1);
 		matrix[cursor] = Element.CHARACTER;
 		characterPosition = cursor;
 		

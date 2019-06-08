@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -12,18 +14,18 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-//import theGamePackage.IGameManager.Direction;
-//
-//import GameView.StartAction;
-//import GameView.StopAction;
-//import GameView.ourThread;
+import theGamePackage.IGameManager.Element;
 
-public class GameView extends JFrame{ 
+//import theGamePackage.IGameManager.Direction;
+
+public class GameView extends JFrame implements ActionListener{ 
 	
+	private int rowNumber;
+	private int colNumber;
 	private static final long serialVersionUID = 1L; // ???
     private static final int GAP = 1;
     private static final Font LABEL_FONT = new Font(Font.DIALOG, Font.PLAIN, 24);
-    public JLabel[][] grid = new JLabel[5][5];
+    public JLabel[][] grid;
 	
 	
 	JButton btnUp = new JButton("Up");	
@@ -37,7 +39,11 @@ public class GameView extends JFrame{
 	Thread varThread = null;
 	
 	
-	public GameView() {
+	public GameView(int rowNum, int colNum) {
+
+		this.rowNumber = rowNum;
+		this.colNumber = colNum;
+		this.grid = new JLabel[rowNumber][colNumber];
 
 		JPanel panMain = new JPanel(new GridLayout(3, 0));
 		JPanel panMatrix = new JPanel(new GridLayout(5, 5, GAP, GAP));
@@ -60,62 +66,56 @@ public class GameView extends JFrame{
 		{
 			for(int col = 0; col < grid[row].length; col++)
 			{
-				grid[row][col] = new JLabel("     ", SwingConstants.CENTER);
+				grid[row][col] = new JLabel("", SwingConstants.CENTER);
                 grid[row][col].setFont(LABEL_FONT); // make it big
                 grid[row][col].setOpaque(true);
                 grid[row][col].setBackground(Color.WHITE);
                 panMatrix.add(grid[row][col]);
 			}
-				
 		}
 
 		panMain.add(panBtns);
-		panBtns.add(btnUp);
-		panBtns.add(btnDown);
-		panBtns.add(btnLeft);
-		panBtns.add(btnRight);
-		panBtns.add(btnHint);
-
+		panBtns.add(btnUp); btnUp.addActionListener(this);	
+		panBtns.add(btnRight); btnRight.addActionListener(this);
+		panBtns.add(btnDown); btnDown.addActionListener(this);	
+		panBtns.add(btnLeft); btnLeft.addActionListener(this);		
+		panBtns.add(btnHint); btnHint.addActionListener(this);	
 
 		panMain.add(panMsg);
 		panMsg.add(lblMsg = new JLabel("msgLabel"));
 		
-		
-		
 	}
-	
-	
-	
-	
-	
-//	class StopAction implements ActionListener{
-//		@Override
-//		public void actionPerformed(ActionEvent arg0) {
-//			if (varThread!=null) {
-//				varThread.stop();
-//				varThread = null;
-//				//label.setText(arg0);
-//			}
-//		}
-//	}
-	
-	class ourThread extends Thread {
-		
-//		Random ran = new Random();
-//		int temp;
-		
-		public void run() {
-//			try {
-//				while(true) {
-//				field.setText("asdf");
-//				temp = ran.nextInt(101);
-//				field.setText("" + temp);
-//				sleep(50);
-//				}
-//			} catch (InterruptedException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
+	public void setField(Element[] dataElements) // better if I get the arr like strings and don't import the elements
+	{
+		for(int row = 0; row < grid.length; row++) 
+		{
+			for(int col = 0; col < grid[row].length; col++)
+			{
+				// System.out.println(grid.length*row+col); 
+				switch (dataElements[grid.length*row+col]) { // it will get the elements one by one
+					case CHARACTER: 
+						grid[row][col].setText("CH");
+						break;
+					case OBSTACLE: 
+						grid[row][col].setText("O");
+						break;
+					case BOX: 
+						grid[row][col].setText("B");
+						break;
+					case TARGET: 
+						grid[row][col].setText("T");
+						break;
+				default:
+					break;
+				}
+			}
 		}
 	}
+
+	public void actionPerformed(ActionEvent e)     
+	{
+	    String str = e.getActionCommand();
+	    lblMsg.setText("You clicked " + str);
+	}
+	
 }

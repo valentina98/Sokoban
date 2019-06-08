@@ -10,21 +10,19 @@ import theGamePackage.IGameManager.Direction;
 public class GameController {
 	
 	static IGameManager iGameManager = new GameManager(5,5,5);//rowNum, 
-	
+	static GameView gameView = new GameView(5,5);
 
 	public static void main(String[] args) {
 		
-		GameView gameView = new GameView();
+		gameView.btnUp.addActionListener(new myActionListener());
+		gameView.btnDown.addActionListener(new myActionListener());
+		gameView.btnLeft.addActionListener(new myActionListener());
+		gameView.btnRight.addActionListener(new myActionListener());
+		gameView.btnHint.addActionListener(new myActionListener());
 
-		gameView.btnUp.addActionListener(new MoveUpAction());
-		gameView.btnDown.addActionListener(new MoveDownAction());
-		gameView.btnLeft.addActionListener(new MoveLeftAction());
-		gameView.btnRight.addActionListener(new MoveRightAction());
-		gameView.btnHint.addActionListener(new GetHintAction());
+		gameView.setField(iGameManager.getMatrix());
 		
-		iGameManager.setMatrix();
-		
-		gameView.grid[1][1].setText("asd");
+		//gameView.grid[1][1].setText("asd");
 		
 		boolean moved = iGameManager.move(Direction.UP); // move if possible
 		if(!moved)
@@ -33,61 +31,41 @@ public class GameController {
 		}
 		
 	}
-	
-	static class SetMessageAction implements ActionListener{
+
+	static class myActionListener implements ActionListener{
 
 		@Override
-		public void actionPerformed(ActionEvent arg0) {
-
+		public void actionPerformed(ActionEvent e) {
+			
+			String str = e.getActionCommand();
+		    System.out.println("You clicked " + str);
+		    
+		    if(str.equals("Up")) {
+		    	iGameManager.move(Direction.UP);
+				gameView.setField(iGameManager.getMatrix());
+		    }
+		    if(str.equals("Right"))
+		    {
+		    	iGameManager.move(Direction.RIGHT);
+				gameView.setField(iGameManager.getMatrix());
+		    }
+		    if(str.equals("Down"))
+		    {
+		    	iGameManager.move(Direction.DOWN);
+				gameView.setField(iGameManager.getMatrix());
+		    }
+		    if(str.equals("Left"))
+		    {
+		    	iGameManager.move(Direction.LEFT);
+				gameView.setField(iGameManager.getMatrix());
+		    }
+		    if(str.equals("Hint"))
+		    {
+		    	//iGameManager.findSolution();
+		    
+		    }
 			
 		}
-	}
-	
-	static class MoveUpAction implements ActionListener{
-
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-
-			iGameManager.move(Direction.UP);
-			
-		}
-	}
-	static class MoveDownAction implements ActionListener{
-		
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			
-			iGameManager.move(Direction.DOWN);
-			
-		}
-	}
-	static class MoveLeftAction implements ActionListener{
-
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-
-			iGameManager.move(Direction.LEFT);
-			
-		}
-	}
-	static class MoveRightAction implements ActionListener{
-
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-
-			iGameManager.move(Direction.RIGHT);
-			
-		}
-	}
-	static class GetHintAction implements ActionListener{
-		
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-
-			iGameManager.findSolution();
-		}
-	}
-	
-	
-
+ 	}
 }
+
