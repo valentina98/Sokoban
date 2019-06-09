@@ -43,8 +43,10 @@ public class GameManager implements IGameManager {
 		characterPosition = cursor;
 		
 		// set target position
-		cursor = getRandomNumberInRange(0, rowNumber*colNumber-1);
-		matrix[cursor] = Element.TARGET;
+		do {
+			cursor = getRandomNumberInRange(0, rowNumber*colNumber-1);
+		} while(matrix[cursor] != Element.EMPTY);
+		matrix[cursor] = Element.TARGET; 
 		targetPosition = cursor;
 		
 		// set obstacles' positions
@@ -57,17 +59,16 @@ public class GameManager implements IGameManager {
 
 	@Override
 	public boolean move(Direction dir) {
-		int newPosition;
-		if(positionExists(characterPosition, dir)) {
-			newPosition = getPosition(characterPosition, dir);
-			
-			matrix[characterPosition] = matrix[newPosition]; // sets the old to empty
+		int newPosition = getPosition(characterPosition, dir); // if getPosition returns -1, the position doesn't exist
+		if(newPosition == -1) return false;
+		if(matrix[newPosition] != Element.EMPTY) newPosition = -1; // if not empty you cannot move that way
+		if(newPosition == -1) return false;
+		else 
+		{
+			matrix[characterPosition] = Element.EMPTY; // sets the old to empty //matrix[newPosition]
 			matrix[newPosition] = Element.CHARACTER;
 			characterPosition = newPosition;
 			return true;
-		}
-		else {
-			return false;
 		}
 	}
 	@Override
@@ -105,26 +106,39 @@ public class GameManager implements IGameManager {
 	}
 	
 	private  int getPosition(int pos, Direction dir) {
-		// gets the position I want to reach
-		switch(dir) {
-		  case UP:
-			  return pos-colNumber;
-		  case RIGHT:
-			  return pos+1;
-		  case DOWN:
-			  return pos+colNumber;
-		  case LEFT:
-			  return pos-1;
-		default: 
-			  return -1;
+		if(positionExists(pos, dir)) {
+			// gets the position I want to reach
+			switch(dir) {
+			  case UP:
+				  return pos-colNumber;
+			  case RIGHT:
+				  return pos+1;
+			  case DOWN:
+				  return pos+colNumber;
+			  case LEFT:
+				  return pos-1;
+			default: 
+				  return -1;
+			}
 		}
+		else return -1;
 	}
 	private boolean positionExists(int pos, Direction dir) {
+//		// tests
+//		System.out.println("up: pos < " + colNumber);
+//		System.out.println("right: 0 == " + pos%(colNumber-1));
+//		System.out.println("down: pos <" + ((rowNumber-1)*colNumber-1));
+//		System.out.println("left: 0 == " + pos + colNumber);
+		
 		// Checks if the position I want to reach exists 
 		if(pos < colNumber && dir == Direction.UP ||
 			pos % (colNumber-1) == 0 && dir == Direction.RIGHT ||
-			pos > (rowNumber-1)*colNumber-1 && dir == Direction.DOWN ||
-			pos % colNumber == 0 && dir == Direction.LEFT) return false;
+			pos > ((rowNumber-1)*colNumber)-1 && dir == Direction.DOWN ||
+			pos % colNumber == 0 && dir == Direction.LEFT) 
+		{
+			System.out.println("cannot move that way");
+			return false;
+		}
 		else return true;
 	}
 	private ArrayList<Integer> getReachableArea(int currentPos, ArrayList<Integer> reachableArea){
@@ -134,7 +148,7 @@ public class GameManager implements IGameManager {
 		
 		for (Direction dir : Direction.values()) 
 		{ 
-			if(positionExists(currentPos, dir) && matrix[getPosition(currentPos, dir)] == Element.EMPTY) // not first row && upper element is empty
+			if(getPosition(currentPos, dir)!=-1 && matrix[getPosition(currentPos, dir)] == Element.EMPTY) // not first row && upper element is empty
 				getReachableArea(getPosition(currentPos, dir), reachableArea);
 			else continue;
 		}

@@ -27,7 +27,6 @@ public class GameView extends JFrame implements ActionListener{
     private static final Font LABEL_FONT = new Font(Font.DIALOG, Font.PLAIN, 24);
     public JLabel[][] grid;
 	
-	
 	JButton btnUp = new JButton("Up");	
 	JButton btnDown = new JButton("Down");	
 	JButton btnLeft = new JButton("Left");	
@@ -35,9 +34,6 @@ public class GameView extends JFrame implements ActionListener{
 	JButton btnHint = new JButton("Hint");
 	
 	JLabel lblMsg = new JLabel("", JLabel.LEFT);
-
-	Thread varThread = null;
-	
 	
 	public GameView(int rowNum, int colNum) {
 
@@ -85,7 +81,8 @@ public class GameView extends JFrame implements ActionListener{
 		panMsg.add(lblMsg = new JLabel("msgLabel"));
 		
 	}
-	public void setField(Element[] dataElements) // better if I get the arr like strings and don't import the elements
+	public void setField(Element[] dataElements) 
+	// will be better if I get the arr like strings and don't import the elements
 	{
 		for(int row = 0; row < grid.length; row++) 
 		{

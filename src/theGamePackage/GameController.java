@@ -24,11 +24,7 @@ public class GameController {
 		
 		//gameView.grid[1][1].setText("asd");
 		
-		boolean moved = iGameManager.move(Direction.UP); // move if possible
-		if(!moved)
-		{
-			gameView.lblMsg.setText("You cannot move that way.");
-		}
+		//iGameManager.move(Direction.UP); // move if possible
 		
 	}
 
@@ -39,27 +35,56 @@ public class GameController {
 			
 			String str = e.getActionCommand();
 		    System.out.println("You clicked " + str);
+		    boolean moved;
 		    
 		    if(str.equals("Up")) {
-		    	iGameManager.move(Direction.UP);
-				gameView.setField(iGameManager.getMatrix());
+			    moved = iGameManager.move(Direction.UP);
+				if(!moved)
+				{
+					gameView.lblMsg.setText("You cannot move that way.");
+				}
+				else 
+				{
+					gameView.setField(iGameManager.getMatrix());
+				}
 		    }
-		    if(str.equals("Right"))
+		    else if(str == "Right")
 		    {
-		    	iGameManager.move(Direction.RIGHT);
-				gameView.setField(iGameManager.getMatrix());
+		    	moved = iGameManager.move(Direction.RIGHT);
+				if(!moved)
+				{
+					gameView.lblMsg.setText("You cannot move that way.");
+				}
+				else 
+				{
+					gameView.setField(iGameManager.getMatrix());
+				}
 		    }
-		    if(str.equals("Down"))
+		    else if(str.equals("Down"))
 		    {
-		    	iGameManager.move(Direction.DOWN);
-				gameView.setField(iGameManager.getMatrix());
+		    	moved = iGameManager.move(Direction.DOWN);
+				if(!moved)
+				{
+					gameView.lblMsg.setText("You cannot move that way.");
+				}
+				else 
+				{
+					gameView.setField(iGameManager.getMatrix());
+				}
 		    }
-		    if(str.equals("Left"))
+		    else if(str.equals("Left"))
 		    {
-		    	iGameManager.move(Direction.LEFT);
-				gameView.setField(iGameManager.getMatrix());
+		    	moved = iGameManager.move(Direction.LEFT);
+				if(!moved)
+				{
+					gameView.lblMsg.setText("You cannot move that way.");
+				}
+				else 
+				{
+					gameView.setField(iGameManager.getMatrix());
+				}
 		    }
-		    if(str.equals("Hint"))
+		    else if(str.equals("Hint"))
 		    {
 		    	//iGameManager.findSolution();
 		    
