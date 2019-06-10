@@ -34,38 +34,39 @@ public class GameController {
 		public void actionPerformed(ActionEvent e) {
 			
 			String str = e.getActionCommand();
-		    System.out.println("You clicked " + str);
-		    Boolean moved = null; // class boolean because it may be null
+		    System.out.println("You clicked " + str);;
+		    gameView.lblMsg.setText("You clicked " + str);
+		    Direction dir = null;
 		    
+//				System.out.println("cannot move that way");
+//				//gameView.lblMsg.setText("You cannot move that way.");
 		    switch(str)
 		    {
 			    case "Up":
-				    moved = iGameManager.move(Direction.UP);
-				    
+				    dir = Direction.UP;
 				    break;
 			    case "Right":
-				    moved = iGameManager.move(Direction.RIGHT);
+				    dir = Direction.RIGHT;
 				    break;
 			    case "Down":
-				    moved = iGameManager.move(Direction.DOWN);
+				    dir = Direction.DOWN;
 				    break;
 			    case "Left":
-				    moved = iGameManager.move(Direction.LEFT);
+				    dir = Direction.LEFT;
 				    break;
 			    case "Hint":
 			    	//iGameManager.findSolution();
 				    break;
 		    }
-		    if(moved == null) moved = false;
-		    if(moved)
-			{
-				gameView.setField(iGameManager.getMatrix());
-			}
-			else
-			{
-				//gameView.lblMsg.setText("You cannot move that way.");
-				System.out.println("cannot move that way");
-			}
+		    Position characterPosition = iGameManager.getCharacterPosition();
+		    if(iGameManager.positionExists(characterPosition, dir) && 
+		    		iGameManager.canMoveThatWay(characterPosition, dir))
+		    {
+		    	iGameManager.move(dir);
+		    	gameView.setField(iGameManager.getMatrix());
+		    }
+			
+//		   
 			
 		}
  	}

@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -18,7 +16,7 @@ import theGamePackage.IGameManager.Element;
 
 //import theGamePackage.IGameManager.Direction;
 
-public class GameView extends JFrame implements ActionListener{ 
+public class GameView extends JFrame{ 
 	
 	private int rowNumber;
 	private int colNumber;
@@ -26,6 +24,7 @@ public class GameView extends JFrame implements ActionListener{
     private static final int GAP = 1;
     private static final Font LABEL_FONT = new Font(Font.DIALOG, Font.PLAIN, 24);
     public JLabel[][] grid;
+    public JLabel lblMsg = new JLabel("", JLabel.LEFT);
 	
 	JButton btnUp = new JButton("Up");	
 	JButton btnDown = new JButton("Down");	
@@ -33,7 +32,6 @@ public class GameView extends JFrame implements ActionListener{
 	JButton btnRight = new JButton("Right");
 	JButton btnHint = new JButton("Hint");
 	
-	JLabel lblMsg = new JLabel("", JLabel.LEFT);
 	
 	public GameView(int rowNum, int colNum) {
 
@@ -71,18 +69,17 @@ public class GameView extends JFrame implements ActionListener{
 		}
 
 		panMain.add(panBtns);
-		panBtns.add(btnUp); btnUp.addActionListener(this);	
-		panBtns.add(btnRight); btnRight.addActionListener(this);
-		panBtns.add(btnDown); btnDown.addActionListener(this);	
-		panBtns.add(btnLeft); btnLeft.addActionListener(this);		
-		panBtns.add(btnHint); btnHint.addActionListener(this);	
+		panBtns.add(btnUp); 
+		panBtns.add(btnRight); 
+		panBtns.add(btnDown); 
+		panBtns.add(btnLeft); 
+		panBtns.add(btnHint); 
 
 		panMain.add(panMsg);
 		panMsg.add(lblMsg = new JLabel("msgLabel"));
 		
 	}
-	public void setField(Element[][] dataElements) 
-	// will be better if I get the arr like strings and don't import the elements
+	public void setField(Element[][] dataElements)
 	{
 		for(int row = 0; row < grid.length; row++) 
 		{
@@ -102,16 +99,12 @@ public class GameView extends JFrame implements ActionListener{
 						grid[row][col].setText("T");
 						break;
 				default:
+					grid[row][col].setText("");
 					break;
 				}
 			}
 		}
 	}
 
-	public void actionPerformed(ActionEvent e)     
-	{
-	    String str = e.getActionCommand();
-	    lblMsg.setText("You clicked " + str);
-	}
 	
 }
