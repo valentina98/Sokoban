@@ -81,15 +81,14 @@ public class GameView extends JFrame implements ActionListener{
 		panMsg.add(lblMsg = new JLabel("msgLabel"));
 		
 	}
-	public void setField(Element[] dataElements) 
+	public void setField(Element[][] dataElements) 
 	// will be better if I get the arr like strings and don't import the elements
 	{
 		for(int row = 0; row < grid.length; row++) 
 		{
 			for(int col = 0; col < grid[row].length; col++)
 			{
-				// System.out.println(grid.length*row+col); 
-				switch (dataElements[grid.length*row+col]) { // it will get the elements one by one
+				switch (dataElements[row][col]) {
 					case CHARACTER: 
 						grid[row][col].setText("CH");
 						break;

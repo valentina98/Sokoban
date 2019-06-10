@@ -15,7 +15,7 @@ public interface IGameManager {
     	RIGHT,
     	LEFT
     }
-    public Element[] getMatrix();
+    public Element[][] getMatrix();
     public void setMatrix();
     public boolean move(Direction dir);
     public void findSolution();

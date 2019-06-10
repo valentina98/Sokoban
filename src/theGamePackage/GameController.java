@@ -35,60 +35,37 @@ public class GameController {
 			
 			String str = e.getActionCommand();
 		    System.out.println("You clicked " + str);
-		    boolean moved;
+		    Boolean moved = null; // class boolean because it may be null
 		    
-		    if(str.equals("Up")) {
-			    moved = iGameManager.move(Direction.UP);
-				if(!moved)
-				{
-					gameView.lblMsg.setText("You cannot move that way.");
-				}
-				else 
-				{
-					gameView.setField(iGameManager.getMatrix());
-				}
-		    }
-		    else if(str == "Right")
+		    switch(str)
 		    {
-		    	moved = iGameManager.move(Direction.RIGHT);
-				if(!moved)
-				{
-					gameView.lblMsg.setText("You cannot move that way.");
-				}
-				else 
-				{
-					gameView.setField(iGameManager.getMatrix());
-				}
+			    case "Up":
+				    moved = iGameManager.move(Direction.UP);
+				    
+				    break;
+			    case "Right":
+				    moved = iGameManager.move(Direction.RIGHT);
+				    break;
+			    case "Down":
+				    moved = iGameManager.move(Direction.DOWN);
+				    break;
+			    case "Left":
+				    moved = iGameManager.move(Direction.LEFT);
+				    break;
+			    case "Hint":
+			    	//iGameManager.findSolution();
+				    break;
 		    }
-		    else if(str.equals("Down"))
-		    {
-		    	moved = iGameManager.move(Direction.DOWN);
-				if(!moved)
-				{
-					gameView.lblMsg.setText("You cannot move that way.");
-				}
-				else 
-				{
-					gameView.setField(iGameManager.getMatrix());
-				}
-		    }
-		    else if(str.equals("Left"))
-		    {
-		    	moved = iGameManager.move(Direction.LEFT);
-				if(!moved)
-				{
-					gameView.lblMsg.setText("You cannot move that way.");
-				}
-				else 
-				{
-					gameView.setField(iGameManager.getMatrix());
-				}
-		    }
-		    else if(str.equals("Hint"))
-		    {
-		    	//iGameManager.findSolution();
-		    
-		    }
+		    if(moved == null) moved = false;
+		    if(moved)
+			{
+				gameView.setField(iGameManager.getMatrix());
+			}
+			else
+			{
+				//gameView.lblMsg.setText("You cannot move that way.");
+				System.out.println("cannot move that way");
+			}
 			
 		}
  	}
