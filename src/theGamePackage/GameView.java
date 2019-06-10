@@ -14,7 +14,6 @@ import javax.swing.SwingConstants;
 
 import theGamePackage.IGameManager.Element;
 
-//import theGamePackage.IGameManager.Direction;
 
 public class GameView extends JFrame{ 
 	
@@ -45,13 +44,13 @@ public class GameView extends JFrame{
 		JPanel panMsg = new JPanel(new FlowLayout());
 		
 		this.setVisible(true);
-		this.setSize(500, 500);
+		this.setSize(500, 800);
         this.setTitle("Sokoban");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		this.add(panMain);
 		panMain.setVisible(true);
-		panMain.setSize(400, 400);
+		panMain.setSize(400, 700);
 
 		panMain.add(panMatrix);
 		panMatrix.setBorder(BorderFactory.createEmptyBorder(GAP, GAP, GAP, GAP));

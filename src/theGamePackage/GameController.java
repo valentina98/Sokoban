@@ -34,12 +34,9 @@ public class GameController {
 		public void actionPerformed(ActionEvent e) {
 			
 			String str = e.getActionCommand();
-		    System.out.println("You clicked " + str);;
 		    gameView.lblMsg.setText("You clicked " + str);
 		    Direction dir = null;
 		    
-//				System.out.println("cannot move that way");
-//				//gameView.lblMsg.setText("You cannot move that way.");
 		    switch(str)
 		    {
 			    case "Up":
@@ -65,9 +62,8 @@ public class GameController {
 		    	iGameManager.move(dir);
 		    	gameView.setField(iGameManager.getMatrix());
 		    }
-			
-//		   
-			
+		    else gameView.lblMsg.setText("You cannot move that way.");
+
 		}
  	}
 }
