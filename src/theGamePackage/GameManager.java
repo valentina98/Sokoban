@@ -206,7 +206,6 @@ public class GameManager implements IGameManager {
             				if(matrixModel.matrix[newPos.row][newPos.col] == Element.EMPTY ||
             					matrixModel.matrix[newPos.row][newPos.col] == Element.TARGET)
 	            			{
-            					System.out.println(newPos.compareTo(dest)); 
 				                // Mark cell as visited and enqueue it 
 				                visited[newPos.row][newPos.col] = true; 
 				                QueueNode Adjcell = new QueueNode(newPos, newDist);
