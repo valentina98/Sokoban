@@ -34,7 +34,7 @@ public class GameController {
 		public void actionPerformed(ActionEvent e) {
 			
 			String str = e.getActionCommand();
-		    gameView.lblMsg.setText("You clicked " + str);
+		    gameView.lblMsg.setText("You clicked " + str + " /   ");
 		    Direction dir = null;
 		    boolean moveDirectionClicked = true;
 		    

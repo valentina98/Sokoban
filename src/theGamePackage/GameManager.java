@@ -156,11 +156,14 @@ public class GameManager implements IGameManager {
 	    visited[myPos.row][myPos.col] = true; 
 	    
 	    // Create a queue 
-	    LinkedList<QueueNode> queue = new LinkedList<QueueNode>(); //Queue<QueueNode>
+	    LinkedList<QueueNode> queue = new LinkedList<QueueNode>(); // Used as queue for the positions and their distance
+	    LinkedList<Direction> dirQueue = new LinkedList<Direction>(); // Used as stack for the directions
 	    
-	    // Distance of source cell is 0 
-	    QueueNode source = new QueueNode(myPos, 0); 
+	    
+	    QueueNode source = new QueueNode(myPos, 0); // Distance of source cell is 0 
+	    
 	    queue.add(source);  // Enqueue source cell 
+	    //dirQueue.push(Direction.UP); // add some direction for code purpose, will fix it later on
 	    
 	    boolean pathFound = false;
 	    
@@ -174,13 +177,14 @@ public class GameManager implements IGameManager {
 	        if (headPos.compareTo(dest) == 0) 
 	        	//headPos.row == dest.row && headPos.col == dest.col
 	        {
-	        	System.out.println( "you found it with " + theHead.distance + " moves"); 
+	        	strPath = "You can find it with " + theHead.distance + " moves: "; 
 	        	pathFound = true;
 	        	break;
 	        }
 	            
-	        // Otherwise dequeue the front cell in the queue and enqueue its adjacent cells 
-	        queue.poll(); 
+	        // Otherwise dequeue the front cell in the 2 queues 
+	        queue.poll();
+	        //dirQueue.pop();
 	        
 	        for (Direction dir : Direction.values()) //int i = 0; i < 4; i++
 	        { 
@@ -207,6 +211,7 @@ public class GameManager implements IGameManager {
 				                visited[newPos.row][newPos.col] = true; 
 				                QueueNode Adjcell = new QueueNode(newPos, newDist);
 				                queue.add(Adjcell); 
+				                dirQueue.push(dir);
 	            			}
             				
             			}
@@ -220,7 +225,28 @@ public class GameManager implements IGameManager {
 	    {
 	    	return "Your problem cannot be solved."; 
 	    }
-	    else return strPath;
+	    else 
+	    {
+	    	for(Direction dir : dirQueue)
+	    	{
+	    		switch(dir) 
+	    		{
+				  case UP:
+					  strPath += "up, ";
+					  break;
+				  case RIGHT:
+					  strPath += "right, ";
+					  break;
+				  case DOWN:
+					  strPath += "down, ";
+					  break;
+				  case LEFT:
+					  strPath += "left, ";
+					  break;
+	    		}
+	    	}
+	    	return strPath;
+	    }
 	}
 	
 	@Override
