@@ -1,6 +1,5 @@
 package theGamePackage;
 
-import theGamePackage.IGameManager.Direction;
 
 public interface IGameManager {
 
@@ -24,5 +23,6 @@ public interface IGameManager {
 	public boolean canMoveThatWay(Position characterPosition, Direction dir);
     public void move(Direction dir);
     public void findSolution();
+    public void findShortestPath();
     //public void getRandomElement(ArrayList<Element> mx);
 }

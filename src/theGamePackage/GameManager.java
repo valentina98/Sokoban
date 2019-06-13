@@ -1,12 +1,13 @@
 package theGamePackage;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
+//import java.util.Queue;
 import java.util.Random;
 
 
 public class GameManager implements IGameManager {
 
-    MatrixModel matrixModel;
+    public MatrixModel matrixModel;
     //ArrayList<Element> matrix = new ArrayList<Element>();
     
     public GameManager(int rowNum, int colNum, int brObst) {
@@ -89,32 +90,9 @@ public class GameManager implements IGameManager {
 			matrixModel.characterPosition = newPos;
 		}
 	}
-	@Override
-	public void findSolution() {
-		// Get the reachable area -> characterReachablePath, boxReachablePath
-		// Get the shortest path from the box to the target that can be implemented (can be pushed through it)
-		// methods getBoxPath and get1PushCharacterPath will be needed
-		/* I should check if there is an empty square on the 
-		   opposite side of the turns/ the position opposite of the moving position of the box
-		   so that the character can be there to push */
-		// check if that empty square exists in the characterReachablePath
-		
-		// Get the shortest path from the character to the pushingPosition
-		/* I'll need to get the next element from the boxPath and set the
-		   pushingPosition to the opposite side of that nextElement  */
-		
-		
-		
-		// count character moves
-		
-		//if(matrix[getPosition(direction)] != Element.TARGET) 
-		
-		ArrayList<Integer> reachableArea  = new ArrayList<Integer>();
-		//reachableArea = getReachableArea(characterPosition, reachableArea);
-
-		reachableArea.forEach((n) -> System.out.println(n)); 
-	}
-
+	
+	
+	
 	
 	/* PRIVATE METHODS */
 	
@@ -146,6 +124,151 @@ public class GameManager implements IGameManager {
 		}
 		else return null;
 	}
+	
+	
+	
+	
+	
+	
+	// FIND SOLUTION METHODS
+
+
+	// A Data Structure for queue used in findSolution() 
+    class QueueNode // public
+    {
+    	Position position; // The cordinates of a cell 
+    	int distance; // cell's distance of from the source 
+    	QueueNode(Position p, int d)
+    	{
+    		this.position = p;
+    		this.distance = d;
+    	}
+    }
+    
+    // function to find the shortest path between a given source cell to a destination cell.
+	public void findShortestPath() {
+		
+		Position myPos = matrixModel.characterPosition;
+		Position dest = matrixModel.targetPosition;
+		//System.out.println(myPos.compareTo(dest));
+
+	    boolean visited[][] = new boolean[matrixModel.rowNumber][matrixModel.colNumber]; 
+	    // Mark the source cell as visited 
+	    visited[myPos.row][myPos.col] = true; 
+	    
+	    // Create a queue 
+	    LinkedList<QueueNode> queue = new LinkedList<QueueNode>(); //Queue<QueueNode>
+	    
+	    // Distance of source cell is 0 
+	    QueueNode source = new QueueNode(myPos, 0); 
+	    queue.add(source);  // Enqueue source cell 
+	    
+	    boolean pathFound = false;
+	    
+	    // Do a findSolution starting from source cell 
+	    while (!queue.isEmpty()) 
+	    { 
+	        QueueNode theHead = queue.peek(); 
+	        Position headPos = theHead.position; 
+	  
+	        // If we have reached the destination cell, we are done 
+	        if (headPos.compareTo(dest) == 0) 
+	        	//headPos.row == dest.row && headPos.col == dest.col
+	        {
+	        	System.out.println( theHead.distance); 
+	        	pathFound = true;
+	        	break;
+	        }
+	            
+	  
+	        // Otherwise dequeue the front cell in the queue and enqueue its adjacent cells 
+	        queue.poll(); 
+	        
+	        
+	        for (Direction dir : Direction.values()) //int i = 0; i < 4; i++
+	        { 
+	            // If adjacent cell is valid, has path and not visited yet, enqueue it. 
+	            if (positionExists(headPos, dir))
+	            {
+            		if(canMoveThatWay(headPos, dir))
+            		{
+            			Position newPos = getPosition(headPos, dir);
+            			if(matrixModel.matrix[newPos.row][newPos.col] == Element.EMPTY ||
+            					matrixModel.matrix[newPos.row][newPos.col] == Element.TARGET)
+            			{
+			                // Mark cell as visited and enqueue it 
+			                visited[newPos.row][newPos.col] = true; 
+			                QueueNode Adjcell = new QueueNode(newPos, theHead.distance + 1 );
+			                queue.add(Adjcell); 
+            			}
+            		}
+	            }
+	        } 
+	    }    
+        // Show message if destination cannot be reached 
+	    if(!pathFound)
+	    {
+	    	System.out.println("Your problem cannot be solved."); 
+	    }
+	}
+	
+	@Override
+	public void findSolution() {
+		
+
+	    
+	
+	// 
+	    // check source and destination cell 
+	    // of the matrix have value 1 
+		//Element currentEl = matrixModel.matrix[matrixModel.characterPosition.row][matrixModel.characterPosition.col];
+		
+	        
+//	        Position pos = new Position(matrixModel.characterPosition.row, matrixModel.characterPosition.col);
+//		Direction dir = null;
+//		
+//	    if (positionExists(pos, dir) &&
+//	    		canMoveThatWay(pos, dir))
+//	    {
+//	    	boolean[][] visited = new boolean[matrixModel.rowNumber][matrixModel.colNumber];
+//	    	
+//	    	
+//	        //memset(visited, false, sizeof visited); 
+//	        //return -1; 
+//	    }
+//	    else // if some of the methods returns false or null
+//	    {
+//	    	
+//	    }
+		
+		
+		
+		
+		// Get the reachable area -> characterReachablePath, boxReachablePath
+		// Get the shortest path from the box to the target that can be implemented (can be pushed through it)
+		// methods getBoxPath and get1PushCharacterPath will be needed
+		/* I should check if there is an empty square on the 
+		   opposite side of the turns/ the position opposite of the moving position of the box
+		   so that the character can be there to push */
+		// check if that empty square exists in the characterReachablePath
+		
+		// Get the shortest path from the character to the pushingPosition
+		/* I'll need to get the next element from the boxPath and set the
+		   pushingPosition to the opposite side of that nextElement  */
+		
+		// count character moves
+		
+		//if(matrix[getPosition(direction)] != Element.TARGET) 
+		
+//		ArrayList<Integer> reachableArea  = new ArrayList<Integer>();
+//		//reachableArea = getReachableArea(characterPosition, reachableArea);
+//
+//		reachableArea.forEach((n) -> System.out.println(n)); 
+	}
+
+	
+	
+	
 //	private ArrayList<Integer> getReachableArea(int currentPos, ArrayList<Integer> reachableArea){
 //		// should get the whole area that can be reached from the given position
 //		// currently throws stack overflow

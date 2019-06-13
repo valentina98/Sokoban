@@ -36,6 +36,7 @@ public class GameController {
 			String str = e.getActionCommand();
 		    gameView.lblMsg.setText("You clicked " + str);
 		    Direction dir = null;
+		    boolean moveDirectionClicked = true;
 		    
 		    switch(str)
 		    {
@@ -52,17 +53,23 @@ public class GameController {
 				    dir = Direction.LEFT;
 				    break;
 			    case "Hint":
+			    	moveDirectionClicked = false;
 			    	//iGameManager.findSolution();
+			    	iGameManager.findShortestPath();
 				    break;
 		    }
-		    Position characterPosition = iGameManager.getCharacterPosition();
-		    if(iGameManager.positionExists(characterPosition, dir) && 
-		    		iGameManager.canMoveThatWay(characterPosition, dir))
+		    if(moveDirectionClicked)
 		    {
-		    	iGameManager.move(dir);
-		    	gameView.setField(iGameManager.getMatrix());
+		    	Position characterPosition = iGameManager.getCharacterPosition();
+			    if(iGameManager.positionExists(characterPosition, dir) && 
+			    		iGameManager.canMoveThatWay(characterPosition, dir))
+			    {
+			    	iGameManager.move(dir);
+			    	gameView.setField(iGameManager.getMatrix());
+			    }
+			    else gameView.lblMsg.setText("You cannot move that way.");
 		    }
-		    else gameView.lblMsg.setText("You cannot move that way.");
+		    
 
 		}
  	}

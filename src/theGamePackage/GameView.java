@@ -23,7 +23,8 @@ public class GameView extends JFrame{
     private static final int GAP = 1;
     private static final Font LABEL_FONT = new Font(Font.DIALOG, Font.PLAIN, 24);
     public JLabel[][] grid;
-    public JLabel lblMsg = new JLabel("", JLabel.LEFT);
+    public JLabel lblMsg = new JLabel("", JLabel.CENTER);
+    public JLabel lblSol = new JLabel("", JLabel.CENTER);
 	
 	JButton btnUp = new JButton("Up");	
 	JButton btnDown = new JButton("Down");	
@@ -75,7 +76,8 @@ public class GameView extends JFrame{
 		panBtns.add(btnHint); 
 
 		panMain.add(panMsg);
-		panMsg.add(lblMsg = new JLabel("msgLabel"));
+		panMsg.add(lblMsg = new JLabel("lblMsg"));
+		panMsg.add(lblSol = new JLabel("lblSol"));
 		
 	}
 	public void setField(Element[][] dataElements)
