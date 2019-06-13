@@ -43,8 +43,9 @@ public class GameManager implements IGameManager {
 	public boolean canMoveThatWay(Position myPos, Direction dir)
 	{
 		Position newPos = getPosition(myPos, dir);
-		if(matrixModel.matrix[newPos.row][newPos.col]!= Element.EMPTY) return false;
-		else return true;
+		if(matrixModel.matrix[newPos.row][newPos.col] == Element.EMPTY ||
+				matrixModel.matrix[newPos.row][newPos.col] == Element.TARGET) return true;
+		else return false;
 	}
 	
 	@Override
@@ -146,12 +147,10 @@ public class GameManager implements IGameManager {
     }
     
     // function to find the shortest path between a given source cell to a destination cell.
-	public void findShortestPath() {
+	public String findShortestPath(Position myPos, Position dest) {
 		
-		Position myPos = matrixModel.characterPosition;
-		Position dest = matrixModel.targetPosition;
-		//System.out.println(myPos.compareTo(dest));
-
+		String strPath = new String();
+		
 	    boolean visited[][] = new boolean[matrixModel.rowNumber][matrixModel.colNumber]; 
 	    // Mark the source cell as visited 
 	    visited[myPos.row][myPos.col] = true; 
@@ -165,7 +164,7 @@ public class GameManager implements IGameManager {
 	    
 	    boolean pathFound = false;
 	    
-	    // Do a findSolution starting from source cell 
+	    //outerloop: // helps optimize the loops
 	    while (!queue.isEmpty()) 
 	    { 
 	        QueueNode theHead = queue.peek(); 
@@ -175,15 +174,13 @@ public class GameManager implements IGameManager {
 	        if (headPos.compareTo(dest) == 0) 
 	        	//headPos.row == dest.row && headPos.col == dest.col
 	        {
-	        	System.out.println( theHead.distance); 
+	        	System.out.println( "you found it with " + theHead.distance + " moves"); 
 	        	pathFound = true;
 	        	break;
 	        }
 	            
-	  
 	        // Otherwise dequeue the front cell in the queue and enqueue its adjacent cells 
 	        queue.poll(); 
-	        
 	        
 	        for (Direction dir : Direction.values()) //int i = 0; i < 4; i++
 	        { 
@@ -193,14 +190,27 @@ public class GameManager implements IGameManager {
             		if(canMoveThatWay(headPos, dir))
             		{
             			Position newPos = getPosition(headPos, dir);
-            			if(matrixModel.matrix[newPos.row][newPos.col] == Element.EMPTY ||
-            					matrixModel.matrix[newPos.row][newPos.col] == Element.TARGET)
+            			if(visited[newPos.row][newPos.col] == false)
             			{
-			                // Mark cell as visited and enqueue it 
-			                visited[newPos.row][newPos.col] = true; 
-			                QueueNode Adjcell = new QueueNode(newPos, theHead.distance + 1 );
-			                queue.add(Adjcell); 
+			                int newDist = theHead.distance + 1;
+//            				if(newPos.compareTo(dest) == 0)  // helps optimize the loops
+//            				{
+//            					System.out.println( "you found it with " + newDist + " moves"); 
+//            		        	pathFound = true;
+//            		        	break outerloop;
+//            				}
+            				if(matrixModel.matrix[newPos.row][newPos.col] == Element.EMPTY ||
+            					matrixModel.matrix[newPos.row][newPos.col] == Element.TARGET)
+	            			{
+            					System.out.println(newPos.compareTo(dest)); 
+				                // Mark cell as visited and enqueue it 
+				                visited[newPos.row][newPos.col] = true; 
+				                QueueNode Adjcell = new QueueNode(newPos, newDist);
+				                queue.add(Adjcell); 
+	            			}
+            				
             			}
+            			
             		}
 	            }
 	        } 
@@ -208,15 +218,15 @@ public class GameManager implements IGameManager {
         // Show message if destination cannot be reached 
 	    if(!pathFound)
 	    {
-	    	System.out.println("Your problem cannot be solved."); 
+	    	return "Your problem cannot be solved."; 
 	    }
+	    else return strPath;
 	}
 	
 	@Override
-	public void findSolution() {
+	public String findSolution() {
 		
-
-	    
+		return findShortestPath(matrixModel.characterPosition,matrixModel.targetPosition);
 	
 	// 
 	    // check source and destination cell 

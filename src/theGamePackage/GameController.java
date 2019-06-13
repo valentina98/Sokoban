@@ -54,8 +54,7 @@ public class GameController {
 				    break;
 			    case "Hint":
 			    	moveDirectionClicked = false;
-			    	//iGameManager.findSolution();
-			    	iGameManager.findShortestPath();
+			    	gameView.lblSol.setText(iGameManager.findSolution());
 				    break;
 		    }
 		    if(moveDirectionClicked)

@@ -7,14 +7,10 @@ public class MatrixModel {
 	public int rowNumber;
     public int colNumber;
     public int brObstacles;
-    public Element[][] matrix;  // private
+    public Element[][] matrix;
     public Position characterPosition;
-    public Position targetPosition; /////////////////
+    public Position targetPosition; 
     
-    
-    //ArrayList<Element> matrix = new ArrayList<Element>();
-    
-
     public MatrixModel(int rowNum, int colNum, int brObst) {
 		this.rowNumber = rowNum;
 		this.colNumber = colNum;

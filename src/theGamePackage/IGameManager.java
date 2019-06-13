@@ -22,7 +22,7 @@ public interface IGameManager {
     public boolean positionExists(Position myPos, Direction dir);
 	public boolean canMoveThatWay(Position characterPosition, Direction dir);
     public void move(Direction dir);
-    public void findSolution();
-    public void findShortestPath();
+    public String findSolution();
+    public String findShortestPath(Position myPos, Position dest);
     //public void getRandomElement(ArrayList<Element> mx);
 }
